@@ -13,10 +13,12 @@ pipeline {
                 git branch: 'main', url: JOB_PY
                 script {
                     def pythonScript = 'main.py'
-                    
-                    withFileParameter('input_csv') {
-                        sh (script: "python3 ${pythonScript} \$input_csv", returnStatus: true)
-                    }
+
+                    // Decode the base64-encoded file content
+                    sh (script: "echo \$input_csv | base64 -d > decoded_input.csv", returnStatus: true)
+
+                    // Run the Python script with the decoded input file
+                    sh (script: "python3 ${pythonScript} decoded_input.csv", returnStatus: true)
 
                     if (fileExists('duplicates.txt')) {
                         def duplicates = readFile 'duplicates.txt'
