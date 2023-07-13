@@ -5,6 +5,10 @@ def JOB_PY = "https://github.com/khoatran1602/py-script.git"
 pipeline {
     agent any
 
+    environment {
+        PATH = "C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/Scripts"
+    }
+
     parameters {
         base64File(name: 'csvFile', description: 'CSV file to upload')
     }
