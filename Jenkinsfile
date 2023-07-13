@@ -24,8 +24,6 @@ pipeline {
                         
                     writeFile(file: 'tempFile.csv', text: decodedContent)
 
-                    echo tempFile.csv
-
                     // Run the Python script with the decoded input file
                     sh (script: "python ${pythonScript} tempFile.csv")
                 }
