@@ -1,7 +1,12 @@
 def JOB_PY = "https://github.com/khoatran1602/py-script.git"
 
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9'
+            args '-u' // Run the container with unbuffered output
+        }
+    }
 
     parameters {
         base64File(name: 'input_csv', description: 'CSV file to upload')
