@@ -49,8 +49,7 @@ pipeline {
                         echo decodedContent
                         
                         writeFile(file: 'tempFile.csv', text: decodedContent)
-                        sh "curl -F 'file=@tempFile.csv' https://example.com/upload"
-                        sh "rm tempFile.csv"
+                        echo "Content of tempFile.csv: ${readFile('tempFile.csv')}"
                     } else {
                         echo "No CSV file provided. Skipping upload."
                     }
