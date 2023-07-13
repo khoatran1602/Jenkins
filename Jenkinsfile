@@ -21,13 +21,13 @@ pipeline {
                     echo "Base64-encoded CSV file content: ${params.csvFile}"
 
                     def pythonScript = 'main.py'
-                    sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
+                    bat(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
                     
                     echo "Decoded CSV file content:"
-                    sh(label: 'Display decoded content', script: 'cat tempFile.csv')
+                    bat(label: 'Display decoded content', script: 'cat tempFile.csv')
                         
                     // Run the Python script with the decoded input file
-                    sh(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
+                    bat(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
                 }
             }
         }
