@@ -21,11 +21,10 @@ pipeline {
 
                     def pythonScript = 'main.py'
                     def decodedContent = sh(script: "echo '${params.csvFile}' | base64 --decode", returnStdout: true).trim()
-
-                    echo "Decoded CSV file content:"
-                    echo decodedContent
                         
                     writeFile(file: 'tempFile.csv', text: decodedContent)
+
+                    echo tempFile.csv
 
                     // Run the Python script with the decoded input file
                     sh (script: "python ${pythonScript} tempFile.csv")
