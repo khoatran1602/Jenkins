@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     parameters {
-        base64File(name: 'input.csv', description: 'CSV file to upload')
+        base64File(name: 'input_csv', description: 'CSV file to upload')
     }
 
     stages {
@@ -14,8 +14,8 @@ pipeline {
                 script {
                     def pythonScript = 'main.py'
                     
-                    withFileParameter('input.csv') {
-                        sh (script: "python3 ${pythonScript} ${input.csv}", returnStatus: true)
+                    withFileParameter('input_csv') {
+                        sh (script: "python3 ${pythonScript} \$input_csv", returnStatus: true)
                     }
 
                     if (fileExists('duplicates.txt')) {
