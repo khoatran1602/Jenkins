@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Run Validation Script') {
             steps {
-                git branch: 'main', url: JOB_PY
+                git branch: 'master', url: JOB_PY
                 script {
                     def pythonScript = 'main.py'
 
