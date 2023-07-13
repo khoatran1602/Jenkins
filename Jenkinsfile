@@ -23,7 +23,7 @@ pipeline {
                     sh(label: 'Display decoded content', script: 'cat tempFile.csv')
                         
                     // Run the Python script with the decoded input file
-                    sh(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
+                    sh(label: 'Run Python script', script: "python3 ${pythonScript} tempFile.csv")
                 }
             }
         }
