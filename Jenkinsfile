@@ -9,7 +9,7 @@ pipeline {
     }
 
     parameters {
-        base64File(name: 'input_csv', description: 'CSV file to upload')
+        base64File(name: 'csvFile', description: 'CSV file to upload')
     }
 
     stages {
