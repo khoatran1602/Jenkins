@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     parameters {
-        file(name: 'input.csv', description: 'CSV file to upload')
+        base64File(name: 'input.csv', description: 'CSV file to upload')
     }
 
     stages {
