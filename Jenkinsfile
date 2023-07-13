@@ -6,7 +6,7 @@ pipeline {
     agent any
 
     environment {
-        PATH = "C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/Scripts/:$PATH"
+        PATH = "C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/:$PATH"
     }
 
     parameters {
