@@ -6,7 +6,7 @@ pipeline {
     agent any
 
     environment {
-        PATH = "C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/:$PATH"
+        PATH = "/path/to/python/bin:$PATH"
     }
 
     parameters {
@@ -21,13 +21,20 @@ pipeline {
                     echo "Base64-encoded CSV file content: ${params.csvFile}"
 
                     def pythonScript = 'main.py'
-                    bat(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
+                    sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
                     
                     echo "Decoded CSV file content:"
-                    bat(label: 'Display decoded content', script: 'cat tempFile.csv')
-                        
-                    // Run the Python script with the decoded input file
-                    bat(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
+                    sh(label: 'Display decoded content', script: 'cat tempFile.csv')
+
+                    // Check if Python is available
+                    def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
+
+                    if (pythonAvailable) {
+                        // Run the Python script with the decoded input file
+                        sh(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
+                    } else {
+                        error("Python is not found in the current environment. Please ensure Python is installed and available in the PATH.")
+                    }
                 }
             }
         }
