@@ -18,8 +18,6 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: JOB_PY]]])
                 script {
-                    echo "Base64-encoded CSV file content: ${params.csvFile}"
-
                     def pythonScript = 'main.py'
                     sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
                     
