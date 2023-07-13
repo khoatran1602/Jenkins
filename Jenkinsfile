@@ -14,9 +14,7 @@ pipeline {
                 script {
                     def pythonScript = 'main.py'
 
-                    // Decode the base64-encoded file content
-                    sh (script: "echo \$input_csv | base64 -d > decoded_input.csv", returnStatus: true)
-
+                
                     writeFile(file: 'tempFile.csv', text: decodedContent)
 
                     echo "Content of decoded file: ${decodedContent}"
