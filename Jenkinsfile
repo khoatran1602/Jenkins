@@ -8,20 +8,15 @@ pipeline {
     }
 
     stages {
-        stage('Upload a CSV') {
-            steps {
-                script {
-                    //print the file name
-                    echo "${params.input.csv}"
-                }
-            }
-        }
         stage('Run Validation Script') {
             steps {
                 git branch: 'main', url: JOB_PY
                 script {
                     def pythonScript = 'main.py'
-                    sh (script: "python3 ${pythonScript} input.csv", returnStatus: true)
+                    
+                    withFileParameter('input.csv') {
+                        sh (script: "python3 ${pythonScript} \$input.csv", returnStatus: true)
+                    }
 
                     if (fileExists('duplicates.txt')) {
                         def duplicates = readFile 'duplicates.txt'
