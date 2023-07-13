@@ -17,6 +17,10 @@ pipeline {
                     // Decode the base64-encoded file content
                     sh (script: "echo \$input_csv | base64 -d > decoded_input.csv", returnStatus: true)
 
+                    writeFile(file: 'tempFile.csv', text: decodedContent)
+
+                    echo "Content of decoded file: ${decodedContent}"
+
                     // Run the Python script with the decoded input file
                     sh (script: "python3 ${pythonScript} decoded_input.csv", returnStatus: true)
 
