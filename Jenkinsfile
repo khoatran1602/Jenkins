@@ -31,7 +31,7 @@ pipeline {
 
                     if (pythonAvailable) {
                         // Run the Python script with the decoded input file
-                        sh(label: 'Run Python script', script: "python ${pythonScript} tempFile.csv")
+                        sh(label: 'Run Python script', script: "python3 ${pythonScript} tempFile.csv")
                     } else {
                         error("Python is not found in the current environment. Please ensure Python is installed and available in the PATH.")
                     }
