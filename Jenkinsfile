@@ -95,6 +95,8 @@ pipeline {
         stage('Execution') {
             steps {
                 script {
+                    sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
+                    
                     def pythonMainScript = 'main.py'
 
                     // Check if Python is available
