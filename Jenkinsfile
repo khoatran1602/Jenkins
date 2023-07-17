@@ -78,7 +78,7 @@ pipeline {
                         // Check if the validation was successful
                         def validationStatus = readFile('validation_status.txt').trim()
 
-                        if (validationStatus == "File format is valid: CSV") {
+                        if (validationStatus == "true") {
                             echo "File format is valid."
                         } else {
                             error("The provided file is not in CSV format.")
