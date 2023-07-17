@@ -16,13 +16,13 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: JOB_PY]]])
                 script {
-                    echo "Base64-encoded CSV file content: ${params.csvFile}"
+                    // echo "Base64-encoded CSV file content: ${params.csvFile}"
 
                     def pythonScript = 'main.py'
                     sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
                     
-                    echo "Decoded CSV file content:"
-                    sh(label: 'Display decoded content', script: 'cat tempFile.csv')
+                    // echo "Decoded CSV file content:"
+                    // sh(label: 'Display decoded content', script: 'cat tempFile.csv')
 
                     // Check if the file is in CSV format
                     def isCSV = sh(script: 'head -n 1 tempFile.csv | grep -qE "^([^,]+,)+[^,]+$"', returnStatus: true) == 0
