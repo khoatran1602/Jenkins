@@ -25,11 +25,11 @@ pipeline {
                     sh(label: 'Display decoded content', script: 'cat tempFile.csv')
 
                     // Check if the file is in CSV format
-                    def isCSV = sh(script: "head -n 1 tempFile.csv | grep -qE '^([^,]+,)+[^,]+$'", returnStatus: true) == 0
+                    def isCSV = sh(script: 'head -n 1 tempFile.csv | grep -qE "^([^,]+,)+[^,]+$"', returnStatus: true) == 0
 
                     if (isCSV) {
                         // Check if Python is available
-                        def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
+                        def pythonAvailable = sh(script: 'command -v python || command -v python3', returnStatus: true) == 0
 
                         if (pythonAvailable) {
                             // Run the Python script with the decoded input file
