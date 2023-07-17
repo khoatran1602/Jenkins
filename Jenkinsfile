@@ -64,8 +64,6 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: JOB_PY]]])
                 script {
-                    echo "Base64-encoded CSV file content: ${params.csvFile}"
-
                     def pythonValidationScript = 'validate_csv.py'
 
                     // Decode CSV file
@@ -96,7 +94,7 @@ pipeline {
             steps {
                 script {
                     sh(label: 'Decode CSV file', script: "echo '${params.csvFile}' | base64 --decode > tempFile.csv")
-                    
+
                     def pythonMainScript = 'main.py'
 
                     // Check if Python is available
