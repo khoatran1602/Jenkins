@@ -64,7 +64,9 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: JOB_PY]]])
                 script {
-                    def pythonValidationScript = 'validate-csv.py'
+                    echo "Base64-encoded CSV file content: ${params.csvFile}"
+
+                    def pythonValidationScript = 'validate_csv.py'
 
                     // Decode CSV file
                     writeFile(file: 'tempFile.csv', text: "echo '${params.csvFile}' | base64 --decode")
@@ -73,12 +75,14 @@ pipeline {
                     def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
 
                     if (pythonAvailable) {
-                        sh(label: 'Run Python validation script', script: "python3 ${pythonValidationScript} tempFile.csv")
+                        sh(label: 'Run Python validation script', script: "python3 ${pythonValidationScript} tempFile.csv > validation_status.txt")
                         
                         // Check if the validation was successful
-                        def validationSuccessful = sh(script: "python3 -c 'import sys; exit(0) if sys.stdout.read().startswith(\"File format is valid\") else exit(1)'", returnStatus: true) == 0
+                        def validationStatus = readFile('validation_status.txt').trim()
 
-                        if (!validationSuccessful) {
+                        if (validationStatus == "File format is valid: CSV") {
+                            echo "File format is valid."
+                        } else {
                             error("The provided file is not in CSV format.")
                         }
                     } else {
@@ -106,3 +110,4 @@ pipeline {
         }
     }
 }
+
