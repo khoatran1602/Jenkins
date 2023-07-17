@@ -73,16 +73,25 @@ pipeline {
                     def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
 
                     if (pythonAvailable) {
-                        sh(label: 'Run Python validation script', script: "python3 ${pythonValidationScript} tempFile.csv > validation_status.txt")
+                        // sh(label: 'Run Python validation script', script: "python3 ${pythonValidationScript} tempFile.csv > validation_status.txt")
                         
                         // Check if the validation was successful
-                        def validationStatus = readFile('validation_status.txt').trim()
+                        // def validationStatus = readFile('validation_status.txt').trim()
 
-                        if (validationStatus == "File format is valid: CSV") {
+                        // if (validationStatus == "File format is valid: CSV") {
+                        //     echo "File format is valid."
+                        // } else {
+                        //     error("The provided file is not in CSV format.")
+                        // }
+
+                        def isValid = sh(label: 'Run Python validation script', script: "python3 ${pythonValidationScript} tempFile.csv", returnStdout: true)
+
+                        if (isValid) {
                             echo "File format is valid."
                         } else {
                             error("The provided file is not in CSV format.")
                         }
+
                     } else {
                         error("Python is not found in the current environment. Please ensure Python is installed and available in the PATH.")
                     }
