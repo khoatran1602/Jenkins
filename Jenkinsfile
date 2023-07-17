@@ -1,5 +1,3 @@
-#!/usr/bin/env groovy
-
 def JOB_PY = "https://github.com/khoatran1602/py-script.git"
 
 pipeline {
@@ -26,14 +24,21 @@ pipeline {
                     echo "Decoded CSV file content:"
                     sh(label: 'Display decoded content', script: 'cat tempFile.csv')
 
-                    // Check if Python is available
-                    def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
+                    // Check if the file is in CSV format
+                    def isCSV = sh(script: "head -n 1 tempFile.csv | grep -qE '^([^,]+,)+[^,]+$'", returnStatus: true) == 0
 
-                    if (pythonAvailable) {
-                        // Run the Python script with the decoded input file
-                        sh(label: 'Run Python script', script: "python3 ${pythonScript} tempFile.csv")
+                    if (isCSV) {
+                        // Check if Python is available
+                        def pythonAvailable = sh(script: "command -v python || command -v python3", returnStatus: true) == 0
+
+                        if (pythonAvailable) {
+                            // Run the Python script with the decoded input file
+                            sh(label: 'Run Python script', script: "python3 ${pythonScript} tempFile.csv")
+                        } else {
+                            error("Python is not found in the current environment. Please ensure Python is installed and available in the PATH.")
+                        }
                     } else {
-                        error("Python is not found in the current environment. Please ensure Python is installed and available in the PATH.")
+                        error("The provided file is not in CSV format.")
                     }
                 }
             }
