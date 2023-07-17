@@ -64,7 +64,7 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: JOB_PY]]])
                 script {
-                    def pythonValidationScript = 'validate_csv.py'
+                    def pythonValidationScript = 'validate-csv.py'
 
                     // Decode CSV file
                     writeFile(file: 'tempFile.csv', text: "echo '${params.csvFile}' | base64 --decode")
